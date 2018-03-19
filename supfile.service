@@ -1,0 +1,17 @@
+[Unit]
+Description=Supfile Service Api
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-abnormal
+StartLimitInterval=5
+StartLimitBurst=10
+ExecStart=/usr/local/bin/supfile-api
+RestartSec=60
+
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.targetw

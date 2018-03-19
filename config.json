@@ -1,0 +1,18 @@
+{
+    "name" : "supfile-api",
+    "logging" : {
+        "type" : "stdout",
+        "logdir" : "*",
+        "logtable" : "*"
+    },
+    "database" : {
+        "type" : "mysql",
+        "creds" : {
+            "database" : "SUPFILEDB",
+            "host" : "172.18.0.3",
+            "port" : 3036,
+            "user" : "user",
+            "password" : "1111"
+        }
+    }
+}
