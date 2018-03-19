@@ -4,18 +4,19 @@ import (
     //"fmt"
 
     "github.com/jinzhu/gorm"
-    engine "github.com/a-hilaly/amine.in/engines/database"
+    "github.com/a-hilaly/supfile-api/engine"
     "github.com/a-hilaly/gears/hash"
 )
 
 
 type User struct {
     gorm.Model
-    Name     string `gorm:"size:64"`
-    Nick     string `gorm:"size:64"`
-    Email    string `gorm:"size:64"`
-    Password string `gorm:"size:64"`
-    Type     string `gorm:"size:64"`
+    Username    string `gorm:"size:64"`
+    Firstname   string `gorm:"size:64"`
+    Lastname    string `gorm:"size:64"`
+    Email       string `gorm:"size:64"`
+    Password    string `gorm:"size:64"`
+    AccountType string `gorm:"size:64"`
 }
 
 func NewUser(name, nick, email, password, t string) {
@@ -41,4 +42,8 @@ func AuthentificateUser(email, password string) (*User, bool) {
 
 func UsersList() *[]User {
     return nil
+}
+
+func DropUser() {
+
 }
