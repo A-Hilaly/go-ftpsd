@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
-    "github.com/a-hilaly/supfile-api/config"
+	"github.com/a-hilaly/supfile-api/config"
 )
 
 type Database struct {
@@ -16,26 +16,26 @@ type Database struct {
 var Magicword string = ""
 
 func SetMagicWordFromConfig(conf config.DatabaseConfig) {
-    c := conf.Creds
-    s := c.User + ":" + c.Password + "@tcp(" + c.Host + ")/" + c.Database + "?charset=utf8&parseTime=True&loc=Local"
-    fmt.Println(s)
-    Magicword = s
+	c := conf.Creds
+	s := c.User + ":" + c.Password + "@tcp(" + c.Host + ")/" + c.Database + "?charset=utf8&parseTime=True&loc=Local"
+	fmt.Println(s)
+	Magicword = s
 }
 
 var DB *gorm.DB
 var TestDB *gorm.DB
 
 func init() {
-    //InitDB(Magicword)
+	//InitDB(Magicword)
 }
 
 func Init() {
-    InitDB(Magicword)
+	InitDB(Magicword)
 }
 
 // Opening a database and save the reference to `Database` struct.
 func InitDB(magic string) {
-    db, err := gorm.Open("mysql", magic)
+	db, err := gorm.Open("mysql", magic)
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}
@@ -46,7 +46,7 @@ func InitDB(magic string) {
 
 // This function will create a temporarily database for running testing cases
 func TestDBInit(magic string) {
-    db, err := gorm.Open("mysql", magic)
+	db, err := gorm.Open("mysql", magic)
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}

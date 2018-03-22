@@ -1,7 +1,7 @@
 package system
 
 
-func AddUser() {
+func CreateUser() {
 
 }
 
@@ -10,5 +10,5 @@ func DropUser() {
 }
 
 func UserStats() {
-    
+
 }
