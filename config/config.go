@@ -1,17 +1,26 @@
 package config
 
-
 import (
     "encoding/json"
     "io/ioutil"
     "fmt"
 )
 
+var ConfigFileName string = "config.json"
 
 type Config struct {
-	Name  string `json:"name"`
-	Logging LoggingConfig `json:"logging"`
+	Name     string `json:"name"`
+    Port     int `json:"port"`
+    Mode     string `json:"mode"`
+    Auth     AuthConfig `json:"auth"`
+	Logging  LoggingConfig `json:"logging"`
 	Database DatabaseConfig `json:"database"`
+    System   SystemConfig `json:"system"`
+}
+
+type AuthConfig struct {
+	Token string `json:"token"`
+	Dev   string `json:"dev"`
 }
 
 type LoggingConfig struct {
@@ -31,9 +40,19 @@ type DatabaseConfig struct {
     } `json:"creds"`
 }
 
-
-var ConfigFileName string = "config.json"
-
+type SystemConfig struct {
+    Nodes  []string `json:"nodes"`
+    Policy struct {
+        AllowCreateUserDb  bool `json:"allow_create_user_db"`
+        AllowCreateUserSys bool `json:"allow_create_user_sys"`
+        AllowFtpProtocol   bool `json:"allow_ftp_protocol"`
+    } `json:"policy"`
+    Limits struct {
+        Ulimit            int `json:"ulimit"`
+        MaxStoragePerUser int `json:"max_storage_per_user"`
+        MaxEmailsPerUser  int `json:"max_emails_per_user"`
+    } `json:"limits"`
+}
 
 func LoadConfig() Config {
     var config Config

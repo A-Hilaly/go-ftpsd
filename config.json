@@ -1,5 +1,11 @@
 {
     "name" : "supfile-api",
+    "port" : 9000,
+    "mode" : "DEFAULT",
+    "auth" : {
+        "token" : "XXX",
+        "dev"   : "DEV"
+    },
     "logging" : {
         "type" : "stdout",
         "logdir" : "*",
@@ -9,10 +15,24 @@
         "type" : "mysql",
         "creds" : {
             "database" : "SUPFILEDB",
-            "host" : "172.18.0.3",
+            "host" : "localhost",
             "port" : 3036,
-            "user" : "user",
-            "password" : "1111"
+            "user" : "amine",
+            "password" : "a"
+        }
+    },
+    "system" : {
+        "nodes" : ["/home"],
+
+        "policy" : {
+            "allow_create_user_db" : true,
+            "allow_create_user_sys" : true,
+            "allow_ftp_protocol" : true
+        },
+        "limits" : {
+            "ulimit" : 32768,
+            "max_storage_per_user" : 30,
+            "max_emails_per_user"  : 10000
         }
     }
 }
