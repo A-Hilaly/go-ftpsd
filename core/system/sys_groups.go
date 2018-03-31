@@ -16,8 +16,9 @@ func GetGroups() (*[]string, error) {
     if err != nil {
         return nil, err
     }
-    grps := BytesToString(out)
-    return splitString(grps, " ")
+    grps := bytesToString(out)
+    ad := splitString(grps, " ")
+    return &ad, nil
 }
 
 func GroupExist(name string) (bool, error) {
@@ -25,7 +26,7 @@ func GroupExist(name string) (bool, error) {
     if err != nil {
         return false, err
     }
-    for elem, _ := range *grp {
+    for _, elem := range *grp {
         if elem == name {
             return true, nil
         }

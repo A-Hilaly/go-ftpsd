@@ -18,7 +18,6 @@ type Config struct {
     Auth     AuthConfig `json:"auth"`
 	Logging  LoggingConfig `json:"logging"`
 	Database DatabaseConfig `json:"database"`
-    System   SystemConfig `json:"system"`
 }
 
 type AuthConfig struct {

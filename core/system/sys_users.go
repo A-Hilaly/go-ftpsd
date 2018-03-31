@@ -2,18 +2,16 @@ package system
 
 import "github.com/a-hilaly/supfile-api/core/system/syscall"
 
-
-
 func AddUser(group, user, pass string) error {
     if exist, err := UserExist(user); exist != false {
         return err
     }
     cmd := syscall.New(sudo, mkdir, "-p", "/home/ftp/" + user)
-    err = cmd.Run()
+    err := cmd.Run()
     if err != nil {
         return err
     }
-    cmd = syscall.New(sudo, useradd,
+    cmd = syscall.New(sudo, adduser,
                       "/bin/false", "-d",
                       "/home/ftp/" + user,
                       "-g", group,
@@ -39,9 +37,9 @@ func UserExist(user string) (bool, error) {
     cmd := syscall.New(id, user)
     err := cmd.Run()
     if err != nil {
-        return false, error.ErrorUserDosentExist
+        return false, ErrorUserDosentExist
     }
-    return true
+    return true, nil
 }
 
 func DelUser(user string) error {

@@ -71,7 +71,7 @@ func assembleHandlers(g *gin.Engine) {
         userRoute.GET("/stats", handlers.UserStatsHandler)
     }
 
-    apiConfigRoute := g.Group("/settings")
+    //apiConfigRoute := g.Group("/settings")
     {
 
     }

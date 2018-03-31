@@ -4,3 +4,6 @@
 *.o
 *.so
 *.exe
+
+# node.js
+node_modules

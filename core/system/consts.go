@@ -1,9 +1,9 @@
 package system
 
 //
-// Command lines consts
 
 const (
+    // commands
     id       string = "id"
     df       string = "df"
     rm       string = "rm"
@@ -28,4 +28,7 @@ const (
     addgroup string = "addgroup"
     groupdel string = "groupdel"
     shutdown string = "shutdown"
+
+    // names
+    sftp string = "sftp"
 )
