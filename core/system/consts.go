@@ -25,6 +25,7 @@ const (
     usermod  string = "usermod"
     userdel  string = "userdel"
     adduser  string = "adduser"
+    useradd  string = "useradd"
     addgroup string = "addgroup"
     groupdel string = "groupdel"
     shutdown string = "shutdown"

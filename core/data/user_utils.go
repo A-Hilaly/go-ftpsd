@@ -97,11 +97,8 @@ func DropUserBy(by ,value string) error {
     if err != nil {
         return err
     }
-    err = engine.DB.Delete(user).Error
-    if err != nil {
-        return err
-    }
-    return nil
+    err = engine.DB.Unscoped().Delete(user).Error
+    return err
 }
 
 

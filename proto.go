@@ -2,59 +2,78 @@ package main
 
 import (
     "fmt"
-    "time"
-    "context"
-    "os/exec"
+
+    //"github.com/a-hilaly/supfile-api/core/data"
+    //"github.com/a-hilaly/supfile-api/core/data/engine"
+    //"github.com/a-hilaly/supfile-api/core/config"
+    //"github.com/a-hilaly/supfile-api/core/system"
 )
 
-type Cmd struct {
-    Own *exec.Cmd
+func testData() {
+    //conf := config.LoadConfig()
+    //engine.SetMagicWordFromConfig(conf.Database)
+    //engine.Init()
+    //data.Init()
+    //fmt.Println("hello")
+    //_, err := data.NewUser("kappa12", "kappa@g2.com", "123", "test-account", "simple", "")
+    //fmt.Println(user, err)
+
+    //user, err := data.SelectUserBy("email", "kappa@g.com")
+    //users, err := data.SelectUsersBy("account_type", "test-account")
+    //e, err := data.UserExistBy("username", "kappa")
+    //err2 := data.DropUserBy("username", "kappa1")
+    //users, err2 := data.SelectAllUsers()
+    //fmt.Println(users, err, err2)
+    //user, t , err:= data.AuthentificateUser("facebook", "kappa@g3.com", "XXX")
+    //fmt.Println(user, t, err)
 }
 
-func Command(cmd string, args ...string) *Cmd {
-    return &Cmd{exec.Command(cmd, args...)}
+func test() interface{} {
+    return struct{A int; B int}{}
 }
 
-func CommandContext(ctx context.Context, cmd string, args ...string) *Cmd {
-    return &Cmd{exec.CommandContext(ctx, cmd, args...)}
+type SupfileSystemInterface interface {
+    Hello()
 }
 
-func CommandTimeout(duration time.Duration, cmd string, args ...string) (*Cmd, context.CancelFunc) {
-    con, cancel := context.WithTimeout(context.Background(), duration)
-    return CommandContext(con, cmd, args ...), cancel
+type SupfileSystem struct {A int}
+
+func (s *SupfileSystem) Hello() {
+    fmt.Println("Hello", s.A)
 }
 
-func (c *Cmd) Output() ([]byte, error) {
-    return c.Own.Output()
+type SupfileDataInterface interface {
 }
 
-func (c *Cmd) CombinedOutput() ([]byte, error) {
-    return c.Own.CombinedOutput()
+type SupfileData struct {}
+
+type SupfileCoreInterface interface {
+    // Users
+    System() (SupfileSystemInterface)
+    Data() (SupfileDataInterface)
 }
 
-func (c *Cmd) Run() error {
-    return c.Own.Run()
+type SupfileCoreApi struct{
+    sys  SupfileSystemInterface
+    data SupfileDataInterface
 }
 
-func (c *Cmd) Start() error {
-    return c.Own.Start()
+func (sfc *SupfileCoreApi) System() (SupfileSystemInterface) {
+    return sfc.sys
 }
 
-func (c *Cmd) StartThreaded(ce chan error) {
-    c.Start()
-    err := c.Wait()
-    ce <- err
+func (sfc *SupfileCoreApi) Data() (SupfileDataInterface) {
+    return nil
 }
 
-func (c *Cmd) Wait() error{
-    return c.Own.Wait()
+func CoreApi() SupfileCoreInterface {
+    return &SupfileCoreApi{sys: &SupfileSystem{}, data: &SupfileData{}}
 }
+
 
 func main() {
-    cmd := Command("ls", "-la", "kaka")
-    ec := make(chan error, 1)
-    go cmd.StartThreaded(ec)
-    fmt.Println(<- ec)
+    a := CoreApi()
     fmt.Println(a)
-
+    a.System().Hello()
+    fmt.Println(a.Data())
 }

@@ -4,42 +4,56 @@ import (
     "sync"
 )
 
-type LiveStats struct {
-    mutex          sync.Mutex
-    Storage        int
-    FTPConnections int
-}
-
-func (rt *LiveStats) Update(storage, ftpc int) {
-    rt.mutex.Lock()
-    defer rt.mutex.Unlock()
-    rt.Storage = storage
-    rt.FTPConnections = ftpc
-}
-
+// Rules
 var (
-    RealTime = &LiveStats{}
-
+    // File mutex
     mutex              sync.Mutex
+
+    // Allow rules
     AllowFtpProtocol   bool = true
     AllowCreateUser    bool = true
     AllowCreateUserDb  bool = true
     AllowCreateUserSys bool = true
+    AllowShellAccess   bool = true
+    AllowSudo          bool = true
 
+    // Limit rules
     MaxTotalStorage     int = 1000
     MaxStoragePerUser   int = 50
     MaxEmailsPerUser    int = 50
 
-    AllowShellAccess   bool = true
-    AllowSudo          bool = true
+    // Default definitions
     Ulimit              int = 8192
     FTPGroup         string = "sftp"
 )
 
-func LockRules() {
-    mutex.Lock()
+// Lock file
+func LockRules() {mutex.Lock()}
+
+// Unlock file
+func UnlockRules() {mutex.Unlock()}
+
+// Live stats is a mutex protected struct
+// Only one goroutine can update the stats at onces
+type LiveStats struct {
+    mutex          sync.Mutex
+    Storage        int        // Mbs
+    FTPConnections int
 }
 
-func UnlockRules() {
-    mutex.Unlock()
+// Update livestats
+func (rt *LiveStats) Update(storage, ftpc int) {
+    rt.Lock()
+    defer rt.Unlock()
+    rt.Storage = storage
+    rt.FTPConnections = ftpc
 }
+
+// Lock mutex
+func (rt *LiveStats) Lock() {rt.mutex.Lock()}
+
+// Unlockmutex
+func (rt *LiveStats) Unlock() {rt.mutex.Unlock()}
+
+// RealTimeStats
+var RealTimeStats = &LiveStats{}

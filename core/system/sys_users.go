@@ -11,16 +11,16 @@ func AddUser(group, user, pass string) error {
     if err != nil {
         return err
     }
-    cmd = syscall.New(sudo, adduser,
-                      "/bin/false", "-d",
-                      "/home/ftp/" + user,
+    cmd = syscall.New(sudo, useradd,
+                      "-s", "/bin/false",
+                      "-d", "/home/ftp/" + user,
                       "-g", group,
                       user)
     err = cmd.Run()
     if err != nil {
         return err
     }
-    cmd = syscall.New(sudo, "--password", pass, user)
+    cmd = syscall.New(sudo, usermod, "--password", pass, user)
     err = cmd.Run()
     if err != nil {
         return err
@@ -43,7 +43,7 @@ func UserExist(user string) (bool, error) {
 }
 
 func DelUser(user string) error {
-    if exist, err := UserExist(user); exist != false {
+    if exist, err := UserExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, userdel, "-f", user)

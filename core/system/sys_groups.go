@@ -3,7 +3,7 @@ package system
 import "github.com/a-hilaly/supfile-api/core/system/syscall"
 
 func AddGroup(name string) error {
-    if exist, err := GroupExist(name); exist == false {
+    if exist, err := GroupExist(name); exist != false {
         return err
     }
     cmd := syscall.New(addgroup, name)
@@ -16,7 +16,7 @@ func GetGroups() (*[]string, error) {
     if err != nil {
         return nil, err
     }
-    grps := bytesToString(out)
+    grps := bytesToString(out[:len(out)-1])
     ad := splitString(grps, " ")
     return &ad, nil
 }
