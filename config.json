@@ -20,19 +20,5 @@
             "user" : "amine",
             "password" : "a"
         }
-    },
-    "system" : {
-        "nodes" : ["/home"],
-
-        "policy" : {
-            "allow_create_user_db" : true,
-            "allow_create_user_sys" : true,
-            "allow_ftp_protocol" : true
-        },
-        "limits" : {
-            "ulimit" : 32768,
-            "max_storage_per_user" : 30,
-            "max_emails_per_user"  : 10000
-        }
     }
 }

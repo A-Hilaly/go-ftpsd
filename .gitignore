@@ -1,0 +1,6 @@
+# binaries
+
+./main
+*.o
+*.so
+*.exe
