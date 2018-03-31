@@ -10,3 +10,8 @@ type ResponseError struct {
     Error       string `json:"error"`
     Description string `json:"description"`
 }
+
+
+type RequestJson struct {
+    Token string
+}

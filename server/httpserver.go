@@ -70,6 +70,11 @@ func assembleHandlers(g *gin.Engine) {
         userRoute.GET("/info", handlers.UserDataHandler)
         userRoute.GET("/stats", handlers.UserStatsHandler)
     }
+
+    apiConfigRoute := g.Group("/settings")
+    {
+
+    }
 }
 
 func portString(port int) string {
