@@ -1,6 +1,10 @@
 package data
 
-import "github.com/jinzhu/gorm"
+import (
+    "github.com/jinzhu/gorm"
+
+    "github.com/a-hilaly/supfile-api/core/data/engine"
+)
 
 // User model
 // table create as 'user'
@@ -30,4 +34,41 @@ type User struct {
     // Other Specifications
     State       string `gorm:"size:64"`
     MaxStorage  int // in Mb
+}
+
+// Create user table if dosent exist else pass
+func autoMigrateUserTable() {
+    engine.DB.AutoMigrate(User{})
+}
+
+// Create a new user in gorm database engine, mysql in our case
+func newUser(un,
+             email,
+             password,
+             type_,
+             authtype,
+             authtoken string) (*User, error) {
+    id := HashUQ(un)
+    if password == "" && authtoken == "" {
+        return nil, ErrorAuthMethodNotSet
+    }
+    if exist, _ := userExistBy("account_id", id); exist {
+        return nil, ErrorUserAlreadyExist
+    }
+    if exist, _ := userExistBy("email", email); exist {
+        return nil, ErrorUserEmailExist
+    }
+    user := User{
+        Username    :             un,
+		Email       :          email,
+		Password    : Hash(password),
+		AccountType :          type_,
+        AccountId   :             id,
+        AuthType    :       authtype,
+        AuthToken   :      authtoken,
+	}
+	if err := engine.DB.Create(&user).Error; err != nil {
+        return nil, err
+    }
+    return &user, nil
 }

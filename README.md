@@ -8,6 +8,8 @@ Supfile API
 
 - Mysql database
 - Go compiler
+- netstat
+
 
 # Running the Api
 

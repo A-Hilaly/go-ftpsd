@@ -1,7 +1,7 @@
 package data
 
 func tokenizedAuthentification(provider, email, token string) (*User, bool, error){
-    user, err := SelectUserBy("email", email)
+    user, err := selectUserBy("email", email)
     if err != nil {
         return nil, false, err
     }
@@ -11,8 +11,8 @@ func tokenizedAuthentification(provider, email, token string) (*User, bool, erro
     return nil, false, ErrorAuthentificationFailed
 }
 
-func defaultAuthentification(email, password string) (*User, bool, error) {
-    user, err := SelectUserBy("email", email)
+func defaultAuthentification(un, value, password string) (*User, bool, error) {
+    user, err := selectUserBy(un, value)
     if err != nil {
         return nil, false, err
     }
@@ -20,18 +20,4 @@ func defaultAuthentification(email, password string) (*User, bool, error) {
 		return user, true, nil
 	}
     return nil, false, ErrorAuthentificationFailed
-}
-
-// Authentificate user
-func AuthentificateUser(method, email, pass string) (*User, bool, error) {
-	switch method {
-    case "simple":
-        return defaultAuthentification(email, pass)
-    case "facebook":
-        return tokenizedAuthentification("facebook", email, pass)
-    case "google":
-        return tokenizedAuthentification("google", email, pass)
-    default:
-        return nil, false, ErrorUnkownMethod
-    }
 }

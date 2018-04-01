@@ -3,9 +3,9 @@ package main
 import (
     "fmt"
 
-    //"github.com/a-hilaly/supfile-api/core/data"
-    //"github.com/a-hilaly/supfile-api/core/data/engine"
-    //"github.com/a-hilaly/supfile-api/core/config"
+    "github.com/a-hilaly/supfile-api/core/data"
+    "github.com/a-hilaly/supfile-api/core/data/engine"
+    "github.com/a-hilaly/supfile-api/core/config"
     //"github.com/a-hilaly/supfile-api/core/system"
 )
 
@@ -28,52 +28,23 @@ func testData() {
     //fmt.Println(user, t, err)
 }
 
-func test() interface{} {
-    return struct{A int; B int}{}
+func test() {
+    conf := config.LoadConfig()
+    engine.SetMagicWordFromConfig(conf.Database)
+    engine.Init()
+    //data.Init()
+    man := data.NewManager("first")
+    config := man.GetConfig()
+    fmt.Println(config)
+    str, err := man.GetUserAccountID("username", "amine")
+    fmt.Println(str, err)
+    user, err := man.GetUser(str)
+    fmt.Println(user, err)
+
+    user, err = man.CreateUser("amiine", "huge@lol", "normal", "simple", "ueh")
+    fmt.Println(user, err)
 }
-
-type SupfileSystemInterface interface {
-    Hello()
-}
-
-type SupfileSystem struct {A int}
-
-func (s *SupfileSystem) Hello() {
-    fmt.Println("Hello", s.A)
-}
-
-type SupfileDataInterface interface {
-}
-
-type SupfileData struct {}
-
-type SupfileCoreInterface interface {
-    // Users
-    System() (SupfileSystemInterface)
-    Data() (SupfileDataInterface)
-}
-
-type SupfileCoreApi struct{
-    sys  SupfileSystemInterface
-    data SupfileDataInterface
-}
-
-func (sfc *SupfileCoreApi) System() (SupfileSystemInterface) {
-    return sfc.sys
-}
-
-func (sfc *SupfileCoreApi) Data() (SupfileDataInterface) {
-    return nil
-}
-
-func CoreApi() SupfileCoreInterface {
-    return &SupfileCoreApi{sys: &SupfileSystem{}, data: &SupfileData{}}
-}
-
 
 func main() {
-    a := CoreApi()
-    fmt.Println(a)
-    a.System().Hello()
-    fmt.Println(a.Data())
+    test()
 }

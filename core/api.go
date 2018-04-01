@@ -7,8 +7,8 @@ import (
 
 type CoreInterface interface {
     // Users
-    System() (system.SystemInterface, error)
-    Data() (data.DataInterface, error)
+    System() system.SystemInterface, error
+    Data() data.DataInterface
 }
 
 type CoreManager struct{
@@ -16,14 +16,14 @@ type CoreManager struct{
     data data.DataInterface
 }
 
-func (sfc *CoreManager) System() (system.SystemInterface, error) {
-    return sfc.sys, nil
+func (sfc *CoreManager) System() (system.SystemInterface) {
+    return sfc.sys
 }
 
-func (sfc *CoreManager) Data() (data.DataInterface, error) {
-    return sfc.data, nil
+func (sfc *CoreManager) Data() (data.DataInterface) {
+    return sfc.data
 }
 
-func ApiManager() CoreInterface {
-    return &CoreManager{sys: &SystemManager{}, data: &DataManager{}}
+func NewManager() CoreInterface {
+    return &CoreManager{sys: system.NewManager(), data: data.NewManager()}
 }
