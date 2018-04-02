@@ -2,6 +2,7 @@ package system
 
 import (
     "strings"
+    "strconv"
 )
 
 func bytesToString(b []byte) string {
@@ -14,4 +15,12 @@ func splitString(s, sep string) []string {
 
 func splitBytesStringer(b []byte, sep string) []string {
     return splitString(bytesToString(b), sep)
+}
+
+func intToString(i int) string {
+    return strconv.Itoa(i)
+}
+
+func stringToInt(s string) int {
+    return strconv.Atoi(s)
 }

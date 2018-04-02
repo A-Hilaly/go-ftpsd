@@ -18,6 +18,7 @@ const (
     mkdir    string = "mkdir"
     chown    string = "chown"
     quota    string = "quota"
+    vmstat   string = "vmstat"
     reboot   string = "reboot"
     groups   string = "groups"
     ulimit   string = "ulimit"
@@ -33,5 +34,6 @@ const (
     shutdown string = "shutdown"
 
     // names
-    sftp string = "sftp"
+    sftp s    tring = "sftp"
+    googleip string = "google.com"
 )

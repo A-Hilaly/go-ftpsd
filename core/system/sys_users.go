@@ -16,7 +16,7 @@ func addUser(user, pass string) error {
     return err
 }
 
-func addUserSFTP(group, user, pass string) error {
+func addUserGroup(group, user, pass string) error {
     if exist, err := UserExist(user); exist != false {
         return ErrorUserAlreadyExist
     }
@@ -109,5 +109,5 @@ func changeUserPassword(user, npass string) error {
 }
 
 func cleanUserDirectory(user) error {
-
+    return ErrorNotImplemented
 }

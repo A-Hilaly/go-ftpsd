@@ -13,13 +13,14 @@ type SystemInterface interface {
     SetStats(sc systemStats)
     GetStats() systemStats
     MakeStats() error
+    UpdateStats() error
 
     // Group
     AddGroup(name string) error
     GetGroups() (*[]string, error)
     DelGroup(name string) error
     GroupExist(name string) (bool, error)
-    ChangeGroupName(old, nname string) error
+    RenameGroup(old, nname string) error
 
     // User
     AddUserFtp(user, pass string) error
@@ -193,55 +194,94 @@ func (sm *SystemManager) AddGroup(name string) error {
 }
 
 func (sm *SystemManager) GetGroups() (*[]string, error) {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return getGroups()
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) DelGroup(name string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return delGroup(name)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) GroupExist(name string) (bool, error) {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return groupExist(name)
+    }
+    return ErrorRuleNotAllowed
 }
 
-func (sm *SystemManager) ChangeGroupName(old, name string) error {
-
+func (sm *SystemManager) RenameGroup(old, name string) error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return renameGroup(old, name)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) AddUser(user, pass string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return addUser(name, pass)
+    }
+    return ErrorRuleNotAllowed
 }
 
-func (sm *SystemManager) AddUserFtp(user, pass, string) error {
-
+func (sm *SystemManager) AddUserGroup(group, user, pass, string) error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return addUserSFTP(group, user, pass)
+    }
+    return ErrorRuleNotAllowed
 }
 
-func (sm *SystemManager) UserExist() (bool, error) {
-
+func (sm *SystemManager) UserExist(user string) (bool, error) {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return userExist(user)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) DelUser(user string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return delUser(user)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) AddUserToGroup(user, group string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return addUserToGroup(user, group)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) RemoveUserFromGroup(user, group string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return removeUserFromGroup(name, group)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) ChangeUserName(user, nuser string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return changeuserName(user, nuser)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) ChangeUserPassword(user, npass string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return changeUserPassword(user, npass)
+    }
+    return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) CleanUserDirectory(user string) error {
-
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return CleanUserDirectory(name)
+    }
+    return ErrorRuleNotAllowed
 }
 
 /*

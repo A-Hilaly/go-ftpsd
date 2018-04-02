@@ -41,3 +41,7 @@ func delGroup(name string) error {
     cmd := syscall.New(groupdel, name)
     return cmd.Run()
 }
+
+func renameGroup(old, name string) error {
+    return ErrorNotImplemented
+}
