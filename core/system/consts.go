@@ -6,6 +6,7 @@ const (
     // commands
     id       string = "id"
     df       string = "df"
+    dd       string = "dd"
     rm       string = "rm"
     cp       string = "cp"
     mv       string = "mv"
@@ -24,6 +25,7 @@ const (
     service  string = "service"
     usermod  string = "usermod"
     userdel  string = "userdel"
+    deluser  string = "deluser"
     adduser  string = "adduser"
     useradd  string = "useradd"
     addgroup string = "addgroup"

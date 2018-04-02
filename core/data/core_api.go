@@ -79,6 +79,7 @@ func NewDataConfig(aa, arw, ar, aw, ad, au bool) *dataConfig{
 }
 
 type DataManager struct {
+    mutex  sync.Mutex
     id     string
     config *dataConfig
 }
@@ -94,14 +95,14 @@ func NewManagerWithConfig(id string, dc *dataConfig) DataInterface {
 // Interface Implementation
 
 func (dm DataManager) InitConfig() {
-    dm.config.lock()
-    defer dm.config.unlock()
+    dm.mutex.Lock()
+    defer dm.mutex.Unlock()
     dm.config = defaultConfig()
 }
 
 func (dm DataManager) SetConfig(cfg *dataConfig) {
-    dm.config.lock()
-    defer dm.config.unlock()
+    dm.mutex.lock()
+    defer dm.mutex.unlock()
     dm.config = cfg
 }
 

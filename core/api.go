@@ -24,6 +24,6 @@ func (sfc *CoreManager) Data() (data.DataInterface) {
     return sfc.data
 }
 
-func NewManager() CoreInterface {
-    return &CoreManager{sys: system.NewManager(), data: data.NewManager()}
+func NewManager(id string) CoreInterface {
+    return &CoreManager{sys: system.NewManager(id), data: data.NewManager(id)}
 }
