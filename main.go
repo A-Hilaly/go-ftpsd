@@ -11,7 +11,7 @@ import (
 )
 
 // Load and set configuration
-func Configure() {
+func configure() {
     conf := config.LoadConfig()
     engine.SetMagicWordFromConfig(conf.Database)
     engine.Init()
@@ -21,7 +21,7 @@ func Configure() {
 }
 
 func main() {
-    fmt.Println(core.AllowFtpProtocol)
-    Configure()
+    //fmt.Println(core.AllowFtpProtocol)
+    configure()
     server.Run()
 }

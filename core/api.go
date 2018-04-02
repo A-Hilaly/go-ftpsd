@@ -7,7 +7,7 @@ import (
 
 type CoreInterface interface {
     // Users
-    System() system.SystemInterface, error
+    System() system.SystemInterface
     Data() data.DataInterface
 }
 

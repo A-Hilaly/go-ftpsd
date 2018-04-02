@@ -3,7 +3,7 @@ package system
 import "github.com/a-hilaly/supfile-api/core/system/syscall"
 
 func addUser(user, pass string) error {
-    if exist, err := UserExist(user); exist != false {
+    if exist, err := userExist(user); exist != false || err != nil {
         return ErrorUserAlreadyExist
     }
     cmd := syscall.New(sudo, adduser, user)
@@ -17,7 +17,7 @@ func addUser(user, pass string) error {
 }
 
 func addUserGroup(group, user, pass string) error {
-    if exist, err := UserExist(user); exist != false {
+    if exist, err := userExist(user); exist != false || err != nil {
         return ErrorUserAlreadyExist
     }
     cmd := syscall.New(sudo, mkdir, "-p", "/home/ftp/" + user)
@@ -57,7 +57,7 @@ func userExist(user string) (bool, error) {
 }
 
 func delUser(user string) error {
-    if exist, err := UserExist(user); exist == false {
+    if exist, err := userExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, userdel, "-f", user)
@@ -65,7 +65,7 @@ func delUser(user string) error {
 }
 
 func addUserToGroup(user, group string) error {
-    if exist, err := UserExist(user); exist == false {
+    if exist, err := userExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, useradd, "-G", group, user)
@@ -74,7 +74,7 @@ func addUserToGroup(user, group string) error {
 }
 
 func removeUserFromGroup(user, group string) error {
-    if exist, err := UserExist(user); exist == false {
+    if exist, err := userExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, deluser, user, group)
@@ -82,12 +82,12 @@ func removeUserFromGroup(user, group string) error {
     return err
 }
 
-func userHomeFolder(user) string {
+func userHomeFolder(user string) string {
     return "/home/ftp/" + user
 }
 
 func changeUserName(user, nuser string) error {
-    if exist, err := UserExist(user); exist == false {
+    if exist, err := userExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, usermod, "-l", nuser, user)
@@ -96,7 +96,7 @@ func changeUserName(user, nuser string) error {
 }
 
 func changeUserHomeFolder(user, nuser string) error {
-    if exist, err := UserExist(user); exist == false {
+    if exist, err := userExist(user); exist == false {
         return err
     }
     cmd := syscall.New(sudo, usermod, "-l", nuser, user)
@@ -108,6 +108,6 @@ func changeUserPassword(user, npass string) error {
     return ErrorNotImplemented
 }
 
-func cleanUserDirectory(user) error {
+func cleanUserDirectory(user string) error {
     return ErrorNotImplemented
 }

@@ -34,6 +34,6 @@ const (
     shutdown string = "shutdown"
 
     // names
-    sftp s    tring = "sftp"
+    sftp     string = "sftp"
     googleip string = "google.com"
 )

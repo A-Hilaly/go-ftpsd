@@ -8,3 +8,10 @@ func isOnline() error {
     // Good byte
     return cmd.Run()
 }
+
+
+func checkHealth(ip string) error {
+    cmd := syscall.New(curl, ip, "-m", "1")
+    // Good byte
+    return cmd.Run()
+}

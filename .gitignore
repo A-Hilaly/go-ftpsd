@@ -1,5 +1,6 @@
 # binaries
 
+./supfile-ep
 ./main
 *.o
 *.so

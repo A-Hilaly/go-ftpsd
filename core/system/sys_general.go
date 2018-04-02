@@ -8,34 +8,38 @@ func setUlimit(limit int) error {
 }
 
 func getUlimit() (int, error) {
-
-    cmd := syscall.New(ulimit, "-n", intToString(limit))
+    cmd := syscall.New(ulimit, "-n")
     u, err := cmd.Output()
     if err != nil {
-        return err
+        return 0, err
     }
-    return stringToInt(bytesToString(u[:len(u)-1])), nil
+    s := bytesToString(u[:len(u)-1])
+    y, err := stringToInt(s)
+    if err != nil {
+        return 0, err
+    }
+    return y, nil
 }
 
-func df() (*[]byte, error){
+func getDf() ([]byte, error) {
     cmd := syscall.New(df)
     u, err := cmd.Output()
-    return &u, err
+    return u, err
 }
 
-func vmStat() (*[]byte, error) {
+func getVmStat() ([]byte, error) {
     cmd := syscall.New(vmstat)
     u, err := cmd.Output()
-    return &u, err
+    return u, err
 }
 
-func reboot() error {
+func doReboot() error {
     cmd := syscall.New(sudo, reboot)
     // Good byte
     return cmd.Run()
 }
 
-func shutdown() error {
+func doShutdown() error {
     cmd := syscall.New(sudo, shutdown, "-f", "now")
     // Good byte
     return cmd.Run()

@@ -101,8 +101,8 @@ func (dm DataManager) InitConfig() {
 }
 
 func (dm DataManager) SetConfig(cfg *dataConfig) {
-    dm.mutex.lock()
-    defer dm.mutex.unlock()
+    dm.mutex.Lock()
+    defer dm.mutex.Unlock()
     dm.config = cfg
 }
 

@@ -6,7 +6,7 @@ import (
     "github.com/a-hilaly/supfile-api/core/data"
     "github.com/a-hilaly/supfile-api/core/data/engine"
     "github.com/a-hilaly/supfile-api/core/config"
-    //"github.com/a-hilaly/supfile-api/core/system"
+    "github.com/a-hilaly/supfile-api/core/system"
 )
 
 func testData() {
@@ -45,6 +45,19 @@ func test() {
     fmt.Println(user, err)
 }
 
+func test2() {
+
+}
+
 func main() {
-    test()
+    //test()
+    test2()
+    man := system.NewManager("second")
+    config := man.GetConfig()
+    stat   := man.GetStats()
+    fmt.Println(config, stat)
+    df, _ := man.Df()
+    //fmt.Println(man.VmStat())
+    fmt.Println(string(df[:]))
+
 }

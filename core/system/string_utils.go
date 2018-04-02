@@ -21,6 +21,6 @@ func intToString(i int) string {
     return strconv.Itoa(i)
 }
 
-func stringToInt(s string) int {
+func stringToInt(s string) (int, error) {
     return strconv.Atoi(s)
 }

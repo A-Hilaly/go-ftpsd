@@ -1,4 +1,4 @@
-package core
+package system
 
 import (
     "sync"
@@ -23,16 +23,27 @@ type SystemInterface interface {
     RenameGroup(old, nname string) error
 
     // User
-    AddUserFtp(user, pass string) error
+    AddUserGroup(group, user, pass string) error
     AddUser(user, pass string) error
     UserExist(user string) (bool, error)
     DelUser(user string) error
     AddUserToGroup(user, group string) error
     RemoveUserFromGroup(user, group string) error
-
     ChangeUserName(user, nuser string) error
     ChangeUserPassword(user, npass string) error
     CleanUserDirectory(user string) error
+
+    // Checks
+    CheckOnline() error
+    CheckHealth(ip string) error
+
+    // General
+    SetUlimit(limit int) error
+    GetUlimit() (int, error)
+    Df() ([]byte, error)
+    VmStat() ([]byte, error)
+    Reboot() error
+    Shutdown() error
 }
 
 type systemConfig struct {
@@ -62,7 +73,7 @@ func defaultConfig() *systemConfig {
     }
 }
 
-func NewSystemConfig(ash, as bool, mts, msu, meu, mnu int, ftp string) {
+func NewSystemConfig(ash, as bool, mts, msu, meu, mnu int, ftp string) *systemConfig {
     return &systemConfig{
         AllowShellAccess  : ash,
         AllowSudo         :  as,
@@ -89,15 +100,15 @@ func (ss *systemStats) lock() {ss.mutex.Lock()}
 func (ss *systemStats) unlock() {ss.mutex.Unlock()}
 
 func LoadSystemStats() (systemStats, error) {
-
+    return systemStats{}, nil
 }
 
-func defaultsstats() systemStats {
-    s, err := LoadSystemStats()
-    return s
+func defaultsstats() *systemStats {
+    s, _ := LoadSystemStats()
+    return &s
 }
 
-func (ss *systemStats) loadFromStats(newstats sytemConfig) {
+func (ss *systemStats) loadFromStats(newstats systemStats) {
     ss.lock()
     defer ss.unlock()
     ss.Ulimit        = newstats.Ulimit
@@ -110,11 +121,12 @@ func (ss *systemStats) loadFromStats(newstats sytemConfig) {
 func (ss *systemStats) Load() error {
     newstats, err := LoadSystemStats()
     ss.lock()
-    defer ss.Unlock()
+    defer ss.unlock()
     ss.loadFromStats(newstats)
+    return err
 }
 
-func (ss *systemStats) Set(conf systemConfig) error {
+func (ss *systemStats) Set(newstats systemStats) {
     ss.lock()
     defer ss.unlock()
     ss.Ulimit        = newstats.Ulimit
@@ -125,7 +137,7 @@ func (ss *systemStats) Set(conf systemConfig) error {
 }
 
 func (ss *systemStats) Make() error {
-
+    return nil
 }
 
 
@@ -171,7 +183,7 @@ func (sm *SystemManager) GetConfig() systemConfig {
 func (sm *SystemManager) InitStats() {
     sm.mutex.Lock()
     defer sm.mutex.Unlock()
-    sm.config = defaultsstats()
+    sm.stats = defaultsstats()
 }
 
 func (sm *SystemManager) GetStats() systemStats {
@@ -179,11 +191,15 @@ func (sm *SystemManager) GetStats() systemStats {
 }
 
 func (sm *SystemManager) SetStats(sc systemStats) {
-    sm.loadFromStats(sc)
+    sm.stats.loadFromStats(sc)
 }
 
 func (sm *SystemManager) MakeStats() error {
     return sm.stats.Make()
+}
+
+func (sm *SystemManager) UpdateStats() error {
+    return ErrorNotImplemented
 }
 
 func (sm *SystemManager) AddGroup(name string) error {
@@ -197,7 +213,7 @@ func (sm *SystemManager) GetGroups() (*[]string, error) {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
         return getGroups()
     }
-    return ErrorRuleNotAllowed
+    return nil, ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) DelGroup(name string) error {
@@ -211,7 +227,7 @@ func (sm *SystemManager) GroupExist(name string) (bool, error) {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
         return groupExist(name)
     }
-    return ErrorRuleNotAllowed
+    return false, ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) RenameGroup(old, name string) error {
@@ -223,14 +239,14 @@ func (sm *SystemManager) RenameGroup(old, name string) error {
 
 func (sm *SystemManager) AddUser(user, pass string) error {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
-        return addUser(name, pass)
+        return addUser(user, pass)
     }
     return ErrorRuleNotAllowed
 }
 
-func (sm *SystemManager) AddUserGroup(group, user, pass, string) error {
+func (sm *SystemManager) AddUserGroup(group, user, pass string) error {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
-        return addUserSFTP(group, user, pass)
+        return addUserGroup(group, user, pass)
     }
     return ErrorRuleNotAllowed
 }
@@ -239,7 +255,7 @@ func (sm *SystemManager) UserExist(user string) (bool, error) {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
         return userExist(user)
     }
-    return ErrorRuleNotAllowed
+    return false, ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) DelUser(user string) error {
@@ -258,14 +274,14 @@ func (sm *SystemManager) AddUserToGroup(user, group string) error {
 
 func (sm *SystemManager) RemoveUserFromGroup(user, group string) error {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
-        return removeUserFromGroup(name, group)
+        return removeUserFromGroup(user, group)
     }
     return ErrorRuleNotAllowed
 }
 
 func (sm *SystemManager) ChangeUserName(user, nuser string) error {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
-        return changeuserName(user, nuser)
+        return changeUserName(user, nuser)
     }
     return ErrorRuleNotAllowed
 }
@@ -279,11 +295,66 @@ func (sm *SystemManager) ChangeUserPassword(user, npass string) error {
 
 func (sm *SystemManager) CleanUserDirectory(user string) error {
     if sm.config.AllowShellAccess && sm.config.AllowSudo {
-        return CleanUserDirectory(name)
+        return cleanUserDirectory(user)
     }
     return ErrorRuleNotAllowed
 }
 
+func (sm *SystemManager) CheckOnline() error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return isOnline()
+    }
+    return ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) CheckHealth(ip string) error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return checkHealth(ip)
+    }
+    return ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) SetUlimit(limit int) error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return setUlimit(limit)
+    }
+    return ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) GetUlimit() (int, error) {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return getUlimit()
+    }
+    return 0, ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) Df() ([]byte, error) {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return getDf()
+    }
+    return []byte{}, ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) VmStat() ([]byte, error) {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return getVmStat()
+    }
+    return []byte{}, ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) Reboot() error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return doReboot()
+    }
+    return ErrorRuleNotAllowed
+}
+
+func (sm *SystemManager) Shutdown() error {
+    if sm.config.AllowShellAccess && sm.config.AllowSudo {
+        return doShutdown()
+    }
+    return ErrorRuleNotAllowed
+}
 /*
 func (sm *SystemManager) () {
 
