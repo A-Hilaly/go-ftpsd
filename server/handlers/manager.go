@@ -6,8 +6,8 @@ import (
 )
 
 
-var Manager core.CoreManager
+var Manager = InitManager()
 
-func InitManager() {
-    Manager = core.NewManager()
+func InitManager() core.CoreInterface {
+    return core.NewManager("XD")
 }

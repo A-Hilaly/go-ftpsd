@@ -1,25 +1,32 @@
-package handlers
+package request
 
 import (
+    "fmt"
     "github.com/gin-gonic/gin"
 )
 
 type Requester interface {
-    FromContext(c *gin.Context) error
-}
-
-type Reponser interface {
-    OnContext(c *gin.Context) error
-}
-
-type Response struct {
-    success int         `json:"id"`
-    Errors  []string    `json:"error"`
-    Data    interface{} `json:"data"`
+    FromContext(c *gin.Context, data interface{}) error
 }
 
 
 type RequestJson struct {
-    Token string      `json:"id"`
+    Token string      `json:"token"`
     Data  interface{} `json:"data"`
 }
+
+
+type Req struct {}
+
+func (r *Req) FromContext(c *gin.Context, data interface{}) (*RequestJson, error) {
+    req := &RequestJson{Data:data}
+    fmt.Println(req, "hello")
+    err := c.ShouldBindJSON(req)
+    fmt.Println(err, "hello")
+    if err != nil {
+        return nil, err
+    }
+    return req, nil
+}
+
+var Request = Req{}

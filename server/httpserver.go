@@ -8,7 +8,7 @@ import (
     "github.com/gin-gonic/gin"
 
     "github.com/a-hilaly/supfile-api/server/handlers"
-    //"github.com/a-hilaly/supfile-api/server/middleware"
+    "github.com/a-hilaly/supfile-api/server/middlewares"
 )
 
 //
@@ -20,9 +20,10 @@ var (
 )
 
 // Init ServerEngine variable
-func Init(port int) {
+func Init(port int, token string) {
     ServerEngine = MakeEngine()
     DefaultPort = port
+    middlewares.SetToken(token)
     Initilized = true
 }
 
@@ -54,6 +55,7 @@ func assembleHandlers(g *gin.Engine) {
 
     // Making routes
     devRoute := g.Group("/dev")
+    devRoute.Use(middlewares.TokenValidationMW())
     {
         devRoute.GET("/", handlers.DevHandler)
         devRoute.GET("/test", handlers.TestHandler)

@@ -7,9 +7,11 @@ import (
     "github.com/a-hilaly/supfile-api/core/data/engine"
     "github.com/a-hilaly/supfile-api/core/config"
     "github.com/a-hilaly/supfile-api/core/system"
+
+    "github.com/a-hilaly/supfile-api/server/request"
 )
 
-func testData() {
+func test0() {
     //conf := config.LoadConfig()
     //engine.SetMagicWordFromConfig(conf.Database)
     //engine.Init()
@@ -46,12 +48,6 @@ func test() {
 }
 
 func test2() {
-
-}
-
-func main() {
-    //test()
-    test2()
     man := system.NewManager("second")
     config := man.GetConfig()
     stat   := man.GetStats()
@@ -59,5 +55,13 @@ func main() {
     df, _ := man.Df()
     //fmt.Println(man.VmStat())
     fmt.Println(string(df[:]))
+}
 
+func test3() {
+
+}
+
+func main() {
+    //test()
+    //test2()
 }
