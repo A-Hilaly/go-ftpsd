@@ -1,8 +1,6 @@
 package engine
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
@@ -33,30 +31,32 @@ func init() {
 	//InitDB(Magicword)
 }
 
-func Init() {
-	InitDB(Magicword)
+func Init() error {
+	return InitDB(Magicword)
 }
 
 // Opening a database and save the reference to `Database` struct.
-func InitDB(magic string) {
+func InitDB(magic string) error {
 	db, err := gorm.Open("mysql", magic)
 	if err != nil {
-		fmt.Println("db err: ", err)
+		return err
 	}
 	db.DB().SetMaxIdleConns(0)
 	//db.LogMode(true)
 	DB = db
+    return nil
 }
 
 // This function will create a temporarily database for running testing cases
-func TestDBInit(magic string) {
+func TestDBInit(magic string) error {
 	db, err := gorm.Open("mysql", magic)
 	if err != nil {
-		fmt.Println("db err: ", err)
+		return err
 	}
 	db.DB().SetMaxIdleConns(0)
 	db.LogMode(true)
 	TestDB = db
+    return nil
 }
 
 // Using this function in order to get a connection db

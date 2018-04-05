@@ -37,9 +37,11 @@ type User struct {
 }
 
 // Create user table if dosent exist else pass
-func autoMigrateUserTable() {
-    engine.DB.AutoMigrate(User{})
+func autoMigrateUserTable() error {
+    return engine.DB.AutoMigrate(User{}).Error
 }
+
+var AutoMigrate func() (error) = autoMigrateUserTable
 
 // Create a new user in gorm database engine, mysql in our case
 func newUser(un,
