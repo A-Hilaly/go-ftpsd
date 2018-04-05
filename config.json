@@ -3,7 +3,7 @@
     "port" : 9000,
     "mode" : "DEFAULT",
     "auth" : {
-        "token" : "XXX",
+        "token" : "xyz",
         "dev"   : "DEV"
     },
     "logging" : {

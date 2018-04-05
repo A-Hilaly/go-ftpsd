@@ -14,17 +14,26 @@ import (
 //
 var (
     ServerEngine *gin.Engine
+    Mode              string
     DefaultPort          int
     TestPort             int
     Initilized          bool = false
 )
 
+const (
+    Debug      string = "DEBUG"
+    Default    string = "DEFAULT"
+    Testing    string = "TESTING"
+    Production string = "PRODUCTION"
+)
+
 // Init ServerEngine variable
-func Init(port int, token string) {
+func Init(mode string, port int, token string) {
     ServerEngine = MakeEngine()
-    DefaultPort = port
+    Mode         = mode
+    DefaultPort  = port
     middlewares.SetToken(token)
-    Initilized = true
+    Initilized   = true
 }
 
 // Call to run server
@@ -65,12 +74,12 @@ func assembleHandlers(g *gin.Engine) {
 
     userRoute := g.Group("/user")
     {
-        userRoute.GET("/create", handlers.CreateUserHandler)
-        userRoute.GET("/update", handlers.UpdateUserHandler)
-        userRoute.GET("/drop", handlers.DropUserHandler)
-        userRoute.GET("/auth", handlers.AuthentificateUserHandler)
-        userRoute.GET("/info", handlers.UserDataHandler)
-        userRoute.GET("/stats", handlers.UserStatsHandler)
+        userRoute.POST("/create", handlers.CreateUserHandler)
+        userRoute.POST("/update", handlers.UpdateUserHandler)
+        userRoute.POST("/drop", handlers.DropUserHandler)
+        userRoute.POST("/auth", handlers.AuthentificateUserHandler)
+        userRoute.POST("/info", handlers.UserDataHandler)
+        userRoute.POST("/stats", handlers.UserStatsHandler)
     }
 
     //apiConfigRoute := g.Group("/settings")

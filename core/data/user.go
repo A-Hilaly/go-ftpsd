@@ -17,23 +17,23 @@ type User struct {
     //       Generated
 
     // User specifications
-	Username    string `gorm:"size:64"`
-	Firstname   string `gorm:"size:64"`
-	Lastname    string `gorm:"size:64"`
+	Username    string `gorm:"size:64" json:"username"`
+	Firstname   string `gorm:"size:64" json:"firstname"`
+	Lastname    string `gorm:"size:64" json:"lastname"`
 
     // Authentification fields
-	Email       string `gorm:"size:64"`
-	Password    string `gorm:"size:64"`
+	Email       string `gorm:"size:64" json:"email"`
+	Password    string `gorm:"size:64" json:"-"`
 
     // Account specifications
-    AccountId   string `gorm:"size:64"`  // Generated
-	AccountType string `gorm:"size:64"`  // Admin  | Default
-    AuthType    string `gorm:"size:64"`  // Normal | Facebook | Google
-    AuthToken   string `gorm:"size:64"`  // Goten from Facebook/Google
+    AccountId   string `gorm:"size:64" json:"account_id"`  // Generated
+	AccountType string `gorm:"size:64" json:"account_type"`  // Admin  | Default
+    AuthType    string `gorm:"size:64" json:"auth_type"`  // Normal | Facebook | Google
+    AuthToken   string `gorm:"size:64" json:"auth_token"`  // Goten from Facebook/Google
 
     // Other Specifications
-    State       string `gorm:"size:64"`
-    MaxStorage  int // in Mb
+    State       string `gorm:"size:64" json:"state"`
+    MaxStorage  int    `json:"auth_token"`  // in Mb
 }
 
 // Create user table if dosent exist else pass

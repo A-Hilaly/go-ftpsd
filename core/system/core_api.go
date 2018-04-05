@@ -63,8 +63,8 @@ func (sc *systemConfig) unlock() {sc.mutex.Unlock()}
 
 func defaultConfig() *systemConfig {
     return &systemConfig{
-        AllowShellAccess  :   true,
-        AllowSudo         :   true,
+        AllowShellAccess  :   false,
+        AllowSudo         :   false,
         MaxTotalStorage   :   1000,
         MaxStoragePerUser :     50,
         MaxEmailsPerUser  :    100,

@@ -1,9 +1,8 @@
 package config
 
 import (
-    "encoding/json"
     "io/ioutil"
-    "fmt"
+    "encoding/json"
 )
 
 var (
@@ -42,19 +41,21 @@ type DatabaseConfig struct {
     } `json:"creds"`
 }
 
-func LoadConfig() Config {
+func LoadConfig() (*Config, error) {
+    return LoadConfigFromPath(ConfigFileName)
+}
+
+func LoadConfigFromPath(path string) (*Config, error) {
     var config Config
-    configFile, err := ioutil.ReadFile(ConfigFileName)
+    configFile, err := ioutil.ReadFile(path)
     if err != nil {
-        fmt.Println(err)
-        return Config{}
+        return nil, err
     }
     err = json.Unmarshal(configFile, &config)
     if err != nil {
-        fmt.Println(err)
-        return Config{}
+        return nil, err
     }
-    return config
+    return &config, nil
 }
 
 func GenerateConfig(filename string) error {

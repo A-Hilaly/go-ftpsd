@@ -35,12 +35,20 @@ func SuccessOnly() Response {
     return MakeResponse(true, nil)
 }
 
-func SuccessUserData(ud us.User) Response {
-    return Response{}
+func SuccessUserData(u us.User) Response {
+    return MakeResponse(true, u)
+}
+
+func SuccessUserDataErrors(u us.User, errs ...string) Response {
+    return MakeResponse(true, u, errs...)
 }
 
 func SuccessData(data interface{}) Response {
     return MakeResponse(true, data)
+}
+
+func SuccessErrors(errs []string) Response {
+    return MakeResponse(true, nil, errs...)
 }
 
 func SuccessAID(id string) Response {

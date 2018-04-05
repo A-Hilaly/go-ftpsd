@@ -1,27 +1,25 @@
 package main
 
 import (
-    "fmt"
+    "log"
 
-    //"github.com/a-hilaly/supfile-api/core"
     "github.com/a-hilaly/supfile-api/server"
-    //"github.com/a-hilaly/supfile-api/core/data"
     "github.com/a-hilaly/supfile-api/core/config"
     "github.com/a-hilaly/supfile-api/core/data/engine"
 )
 
 // Load and set configuration
 func configure() {
-    conf := config.LoadConfig()
+    conf, err := config.LoadConfig()
+    if err != nil {
+        log.Fatal(err)
+    }
     engine.SetMagicWordFromConfig(conf.Database)
     engine.Init()
-    //data.Init()
-    server.Init(conf.Port, "xyz")
-    fmt.Println(conf)
+    server.Init(conf.Mode, conf.Port, conf.Auth.Token)
 }
 
 func main() {
-    //fmt.Println(core.AllowFtpProtocol)
     configure()
     server.Run()
 }

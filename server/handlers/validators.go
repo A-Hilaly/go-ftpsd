@@ -16,3 +16,6 @@ func validateNonEmpty(ss ...string) bool {
     }
     return true
 }
+
+func nonNull(s string) bool {return s != ""}
+func Null(s string) bool {return s != ""}
