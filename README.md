@@ -48,6 +48,15 @@ make sure config.json is on the working directory
 With go compiler
 `go run main.go`
 
+# Compile the Api
+
+```shell
+cd /path/to/supfile-api
+env GOOS=target-OS GOARCH=target-architecture NAME=binary-name go build -o $NAME
+
+#https://www.digitalocean.com/community/tutorials/how-to-build-go-executables-for-multiple-platforms-on-ubuntu-16-04
+```
+
 # Api docs
 
 ##### Create user
