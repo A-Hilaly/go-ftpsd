@@ -11,7 +11,7 @@ var userUrl = mainUrl + "user/";
 var devUrl  = mainUrl + "dev/";
 
 
-// return request URL, method, and json body content
+// return request option (URI, method, json body)
 var createUserCall = function (
     create_data,   //bool
     create_system, //bool
@@ -28,12 +28,12 @@ var createUserCall = function (
         json   : {
             token : APIToken,
             data  : {
-                username     : username, //"stricker23",
-                email        : email, //"hey@stricking.com",
-                auth_type    : auth_type, //"simple",
+                username     : username,     //"stricker23",
+                email        : email,        //"hey@stricking.com",
+                auth_type    : auth_type,    //"simple",
                 account_type : account_type, //"admin" | "simple"
-                password     : password,
-                max_storage  : max_storage, //30 (Gb)
+                password     : password,     //"password"
+                max_storage  : max_storage,  //30 (Gb)
             },
             option : {
                 system : create_system, //create user on OS
