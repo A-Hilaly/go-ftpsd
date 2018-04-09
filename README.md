@@ -2,22 +2,51 @@
 
 Supfile API
 
-## Timeline
+# Requirements
 
-# Dependencies
+- MySQL database
+- config.json file
 
-- Mysql database
-- Go compiler
-- netstat
+# Config
 
+```python
+{
+    "name" : "supfile-api",
+    "port" : 9000,          # Using port
+    "mode" : "DEFAULT",     
+    "auth" : {
+        "token" : "xyz",    # Communication token
+        "dev"   : "DEV"
+    },
+    "logging" : {
+        "type" : "stdout",
+        "logdir" : "*",
+        "logtable" : "*"
+    },
+    "database" : {
+        "type" : "mysql",
+        "creds" : {
+            "database" : "SUPFILEDB", #NOTE database must be created manually
+                                      #     tables can be created automatically
+
+            "host" : "localhost",
+            "port" : 3036,
+            "user" : "amine",
+            "password" : "a"
+        }
+    }
+}
+
+```
 
 # Running the Api
 
+`./bin/runserver-secure`
+
+make sure config.json is on the working directory
+
+With go compiler
 `go run main.go`
-
-or
-
-`./bin/main`
 
 # Api docs
 

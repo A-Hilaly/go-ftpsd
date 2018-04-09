@@ -5,8 +5,8 @@ var url     = require('url');
 
 var APIToken = "xyz";
 var port     = 9000;
-var mainUrl  = "http://localhost:9000/";
 
+var mainUrl  = "http://localhost:9000/";
 var userUrl = mainUrl + "user/";
 var devUrl  = mainUrl + "dev/";
 
@@ -65,7 +65,6 @@ var createUserRequest = function() {
     });
 }
 
-console.log("hi");
 createUserRequest();
 
 
