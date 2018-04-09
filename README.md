@@ -7,7 +7,14 @@ Supfile API
 - MySQL database
 - config.json file
 
-# Config
+
+config.json contain informations about :
+- running port
+- mode
+- security token
+- database engine type
+- database name
+- database credentials
 
 ```python
 {
@@ -31,8 +38,8 @@ Supfile API
 
             "host" : "localhost",
             "port" : 3036,
-            "user" : "amine",
-            "password" : "a"
+            "user" : "root",
+            "password" : "hello"
         }
     }
 }
@@ -41,12 +48,13 @@ Supfile API
 
 # Running the Api
 
-`./bin/runserver-secure`
+Running with released binaries (make sure config.json is on the working directory):
 
-make sure config.json is on the working directory
+- `./bin/runserver-secure`
 
-With go compiler
-`go run main.go`
+Running with go compiler:
+
+- `go run main.go`
 
 # Compile the Api
 
