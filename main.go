@@ -10,7 +10,7 @@ import (
 )
 
 // Load and set configuration
-func configure() {
+func configureServer() {
     conf, err := config.LoadConfig()
     if err != nil {
         log.Fatal(err)
@@ -28,6 +28,6 @@ func configure() {
 }
 
 func main() {
-    configure()
+    configureServer()
     server.Run()
 }
