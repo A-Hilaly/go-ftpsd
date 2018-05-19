@@ -62,10 +62,16 @@ var createUserRequest = function() {
     } else {
         console.log("error");
     }
+    afterResponse();
     });
 }
 
+console.log("hello");
 createUserRequest();
+
+function afterResponse() {
+    console.log('hello after')
+}
 
 
 /*

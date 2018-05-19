@@ -4,20 +4,20 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
-	"github.com/a-hilaly/supfile-api/core/config"
+	"github.com/a-hilaly/go-ftpsd/core/config"
 )
 
 //
 const (
-    Type         string = "MYSQL"  // MySQL Database
-    Protocol     string = "@tcp"   // TCP Protocol
-    SettingsForm string = "?charset=utf8&parseTime=True&loc=Local"
+	Type         string = "MYSQL" // MySQL Database
+	Protocol     string = "@tcp"  // TCP Protocol
+	SettingsForm string = "?charset=utf8&parseTime=True&loc=Local"
 )
 
 var (
-    DB      *gorm.DB  // Production database engine
-    TestDB  *gorm.DB  // Tests      database engine
-    Magicword string = ""          // Magic word ;p
+	DB        *gorm.DB      // Production database engine
+	TestDB    *gorm.DB      // Tests      database engine
+	Magicword string   = "" // Magic word ;p
 )
 
 func SetMagicWordFromConfig(conf config.DatabaseConfig) {
@@ -44,7 +44,7 @@ func InitDB(magic string) error {
 	db.DB().SetMaxIdleConns(0)
 	//db.LogMode(true)
 	DB = db
-    return nil
+	return nil
 }
 
 // This function will create a temporarily database for running testing cases
@@ -56,7 +56,7 @@ func TestDBInit(magic string) error {
 	db.DB().SetMaxIdleConns(0)
 	db.LogMode(true)
 	TestDB = db
-    return nil
+	return nil
 }
 
 // Using this function in order to get a connection db

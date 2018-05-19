@@ -1,26 +1,24 @@
 package data
 
 import (
-
-    "github.com/a-hilaly/supfile-api/core/data/engine"
+	"github.com/a-hilaly/go-ftpsd/core/data/engine"
 )
 
 func updateUserBy(by, value, field string, nvalue interface{}) error {
-    user, err := selectUserBy(by, value)
-    if err != nil {
-        return err
-    }
-    return engine.DB.Model(user).Update(field, value).Error
+	user, err := selectUserBy(by, value)
+	if err != nil {
+		return err
+	}
+	return engine.DB.Model(user).Update(field, value).Error
 }
 
 func updateUserMapBy(by, value string, values map[string]interface{}) error {
-    user, err := selectUserBy(by, value)
-    if err != nil {
-        return err
-    }
-    return engine.DB.Model(user).Updates(values).Error
+	user, err := selectUserBy(by, value)
+	if err != nil {
+		return err
+	}
+	return engine.DB.Model(user).Updates(values).Error
 }
-
 
 /*
 switch field {
