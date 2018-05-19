@@ -1,6 +1,4 @@
-# Supfile api
-
-Supfile API
+# go-ftpsd
 
 # Requirements
 
@@ -18,12 +16,10 @@ config.json contain informations about :
 
 ```python
 {
-    "name" : "supfile-api",
-    "port" : 9000,          # Using port
+    "port" : 9000,
     "mode" : "DEFAULT",     
     "auth" : {
-        "token" : "xyz",    # Communication token
-        "dev"   : "DEV"
+        "token" : "xyz",   
     },
     "logging" : {
         "type" : "stdout",
@@ -31,10 +27,9 @@ config.json contain informations about :
         "logtable" : "*"
     },
     "database" : {
-        "type" : "mysql",
         "creds" : {
-            "database" : "SUPFILEDB", #NOTE database must be created manually
-                                      #     tables can be created automatically
+            "database" : "DB", 
+                                     
 
             "host" : "localhost",
             "port" : 3036,
@@ -43,7 +38,6 @@ config.json contain informations about :
         }
     }
 }
-
 ```
 
 # Running the Api
@@ -59,127 +53,7 @@ Running with go compiler:
 # Compile the Api
 
 ```shell
-cd /path/to/supfile-api
+cd /path/to/go-ftpsd
 env GOOS=target-OS GOARCH=target-architecture NAME=binary-name go build -o $NAME
-
 #https://www.digitalocean.com/community/tutorials/how-to-build-go-executables-for-multiple-platforms-on-ubuntu-16-04
-```
-
-# Api docs
-
-##### Create user
-
-```python
-#
-URL = "/user/create"
-Method = "POST"
-
-# Request body
-request = {
-    "level"    : 2,
-    "username" : "alex123",
-    "email"    : "alexdu123@edu.fr",
-    "authtype" : "simple",
-    "pass"     : "password",
-}
-
-# Response body
-response = {
-    "success" : true,
-    "errors"  : ["no error"],
-    "data"    : {userid : "9x3780019"}
-}
-```
-
-##### Authentificate user
-
-Simple authentification : email/username + password
-
-```python
-#
-URL = "/user/auth"
-Method = "POST"
-
-# Request body
-request = {
-    "email"    : "alexdu123@edu.fr",
-    "authtype" : "simple",
-    "pass"     : "password",
-}
-
-# Response body
-response = {
-    "success" : true,
-    "errors"  : ["no error"],
-    "data"    : {userid : "9x3780019"}
-}
-```
-
-Facebook / Google / Twitter authentification
-
-```python
-#
-URL = "/user/auth"
-Method = "POST"
-
-# Request body
-request = {
-    "email"    : "alexdu123@edu.fr",
-    "authtype" : "facebook",
-    "pass"     : "token"
-}
-
-# Response body
-response = {
-    "success" : true,
-    "errors"  : ["no error"],
-    "data"    : {userid : "9x3780019"}
-}
-```
-
-##### Update user
-
-```python
-#
-URL = "/user/update"
-Method = "POST"
-
-# Request body
-request = {
-    "userid"  : "12345678",
-    "updates" : {
-        "firstname" : "alexandre",
-        "lastname"  : "dupont",
-        "state"     : "inactive"
-    }
-}
-
-# Response body
-response = {
-    "success" : true,
-    "errors"  : ["no error"],
-}
-```
-
-##### Actions on user
-
-```python
-#
-URL = "/user/actions"
-Method = "POST"
-
-# Request body
-request = {
-    "userid"  : "12345678",
-    "email"   : "zinjai@tai.china",
-    "actions" : ["activate"], # drop, ban, limit, remove, stats
-    "args"    : []
-}
-
-# Response body
-response = {
-    "success" : true,
-    "errors"  : ["no error"],
-    "data"    : {userid : "9x3780019"},
-}
 ```
